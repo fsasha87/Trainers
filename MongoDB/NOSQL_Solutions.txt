@@ -26,7 +26,7 @@ db.users.insertOne({"_id": ObjectId("62e27b1b06adfcddf4619fc6"), "name": "Maria"
 {"name": "Lene", "age": 29, "languages": ["english", "spanish"]},
 {"name": "Kate", "age": 30, "languages": ["german", "russian"]}])
 load("D:/trash/users_load.txt")
-Импортировать json-файл [{},{}]: Mongo Compass
+Импортировать json-файл [{},{}]: Mongo Compass => Add data => Import json
 
 DML (update/delete)
 Полностью заменить один документ (name:Donald) другим:

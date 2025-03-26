@@ -1,3 +1,4 @@
 # Trainers
-## SQL Server
-## MongoDB
+## 👉 SQL Server
+## 👉 MongoDB
+## 👉 Shell

@@ -1,0 +1,50 @@
+DDL
+mongosh  => показать список БД => использовать(неявно создать) БД => явно создать коллекцию => переименовать в коллекцию “users” => добавить документ в коллекцию (неявно создав коллекция) => список доментов коллекции => список коллекций => статистика БД => статистика коллекции => очистить коллекцию => удалить коллекцию => удалить БД
+
+DML (insert)
+Добавили документы (name,age) в коллекцию:
+Добавили документы (name,age) в коллекцию (сохранив в переменную)
+Удаление документов (name:Bill; age>30):
+Добавили 3 документа с влож.массивом(languages:[])/ влож.объектом(адрес:{,})/ влож.списоком_объектов(friends:[{name,age},{,}])
+Добавили несколько документов (name, age, languages):
+Добавим документ с явным _id как число: 
+Добавим документ с явным _id как ObjectId (24 символа): 
+Загрузка данных из файла: D:/trash/users_load.txt: db.users.insertMany([
+{"name": "Alice", "age": 31, "languages": ["english", "french"]},
+{"name": "Lene", "age": 29, "languages": ["english", "spanish"]},
+{"name": "Kate", "age": 30, "languages": ["german", "russian"]}])
+Импортировать json-файл [{},{}]: Mongo Compass
+
+DML (update/delete)
+Полностью заменить один документ (name:Donald) другим:
+Изменим age в документе/ах с name="Tom" ($set):
+Увеличить все age на 1 ($inc):
+Добавить новое поле salary ($set):
+Удалить поле salary ($unset):
+Добавить значение в масcив (c/без дублей: $push/$addToSet):
+Удаление значения с массива (последний/ первый/ каждое попадание/ каждый из списка: $pop1/$pop-1/$pull/$pullAll):
+
+DQL
+SELECT * => skip/limit => sort{name:1/-1} => поиск одиночного документа => WHERE Name='…' AND Age=31 => {friends.name:Tom} => WHERE NULL (отсутствует поле) == {age: {$eq:30}} => ($ne (!=), $gt (>), $lt (<), $gte (>=), $lte (<=), $in, $nin (not in)) => {$or: [{},{}]) => ($and, $not, $nor) => {поле: {$exists:true}} => {age: {$type:"number"} => {name: {$regex:"b"}
+
+Фильтрация по элементам массива: 
+{lang: "en"} => {"lang.0": "en"} => {lang: "en", “de”} => {lang: {$all : ["de", "en"]}} => {lang: {$size:2}} => {$elemMatch: {friend_age: {$gt: 18}}}} => {lang: {$slice : 1/-1}}
+
+ПРОЕКЦИЯ
+Вывести только свойства {age:1}, где name=Tom
+Вывести только свойства age (без _id: 0), где name=Tom
+Вывести все свойства кроме age (age: 0), где name=Tom
+Вывести только name всех документов
+Вывести только name всех документов по возрастанию
+
+Агрегатные функции и индексы (для ф-ций min/max(age)):
+countDocuments() => count() => skip(2).count(true) => distinct => createIndex({"age" : 1}) => min/max({age:30}).hint({age:1}) => getIndexes() => dropIndex
+
+Использование JavaScript:
+function sqrt => age:sqrt(5); => resultset => while(rs.hasnext()) => rs.forEach
+
+Ручное и автоматическое связывание коллекций:
+db.companies.insertOne(_id) => db.users.insertOne(…company) => user1=db.users.findOne => db.companies.findOne({_id: user.company})
+
+comp1=comp.insertOne => user1=(name,age,comp:{ "$ref":”comp”, "$id":comp1. insertedId}}) =>users.insertOne(user1) => comp.findOne(_id:user1.comp.$id)
+

@@ -1,0 +1,37 @@
+--1\ DDL: Create TABLE companies(id identity(1,1), comp_name) => ...ALTER COLUMN..varchar(20) => ..ADD col2... => DROP COLUMN 
+--2\ DDL/DML: Create TABLE users(id, user_name, age, birthday date, comp_id, added detetime default getdate()) => 
+--=> ADD CONSTRAINT...CHECK (age>18) => ADD...FK => INsert INTO...VALUES('1989-07-07'...) => Update t1 set... 
+--=> Delete FROM t1... => TRUNCATE table =>...=> DROP table
+--3\ JOIN => Left/Right/Full join => CROSS JOIN => SELECT * FROM t1,t2 WHEREE id=id
+--4\ SUBQUERY(SELECT/FROM): SELECT c1, (Select c2 FROM t2 where id=id) => SELECT s.* FROM (SELECT ...) AS s
+--5\ SUBQUERY(WHERE): WHERE age =/>/IN/>ALL/>ANY (SELECT AVG/MIN...)/ WHERE EXISTS (SELECT * FROM t2 WHERE id=id)
+--6\ TRY/CATCH: BEGIN TRY INSERT...(NULL)...BEGIN CATCH SELECT ERROR_NUMBER()/ERROR_LINE()/ERROR_MESSAGE()
+--7\ TRIGGER: tr1 ON t1 AFTER INSERT AS UPDATE t1 SET c1 =... WHERE id...FROM inserted 
+--8\ TRANSACTION: BEGIN TRANSACTION BEGIN TRY UPDATE...; COMMIT; ...CATCH ROLLBACK;...
+
+
+--9\ SELECT(Salaries_table): SELECT TOP 5 * {PL:LIMIT 5} => DISTINCT => ORDER BY => WHERE (=,<>, [NOT] LIKE('x',_,%), [NOT] IN, BETWEEN, IS [NOT] NULL)
+--10\ STRING: title+CAST(year) => select LEN(x)/upper()/reverse/concat/substring/replace
+--11\ DATE: select GETDATE()/GETUTCDATE()/MONTH(GETDATE())/isdate/dateadd/datediff
+--12\ CASE/IFF: CASE WHEN c1 < 100 THEN 'A' ELSE 'B' END => --SELECT*,IIF(c1<100,'A','B')...
+--13\ AGGREGATE: MIN, SUM, Count(*), ROUND(AVG(),1), x*40 as UAH => WHERE/ Group by c1,c2 /Having /Order By
+--14\ UNION: emp_res UNION/UNION ALL/INTERSECT/EXCEPT{MINUS} comp_location; UNION 'min/max' as header. MIN/MAX(salary) as value
+--15\ CTE(1query)/VIEW: WITH cte1 AS (SELECT *...) -> SELECT * FROM cte1 => CREATE VIEW v1 AS SELECT *... -> SELECT * FROM v1
+--16\ WINDOW: MIN/COUNT/AVG/SUM(c1) OVER (partition by c2) => SUM(c1)OVER(...order by c2)
+--=> SELECT*,ROW_NUMBER()/RANK()/DENSE_RANK() OVER(PARTITION BY c2 ORDER BY c1) FROM...
+--=> select *, LAG/LEAD(s2, 1)/FIRST_VALUE(s2) OVER(Par..by s1 order by s2) FROM...
+
+--17\ VARIABLE: DECLARE @a int; SET @a=(SELECT MAX(salary)...)/SELECT @a=MAX(salary)...; select @a; PRINT 'Max='+STR(@a)/CONVERT(char, @a)/CAST(@a as char);
+--18\ DYNAMIC SQL: DECLARE @SQL varchar(100), @a; SET @a=...; SET @SQL='SELECT... WHERE a='''+@a''''; EXEC (@SQL)
+--19\ IF: ...select @min=MIN(salary)...; IF @min>100 PRINT 'good' ELSE ...
+--20\ WHILE: ...WHILE @num<10 PRINT @num IF @num=7 BREAK/CONTINUE PRINT 'ITER END';
+--21\ TABLE VARIABLE(batch): DECLARE @t1 TABLE (c1 int, ...) => INSERT INTO @t1... => SELECT
+--22\ TEMPTABLE(session): #local/##global(outside script): CREATE TABLE #t1(c1 int, ...) => INSERT INTO #t1... => SELECT... => SELECT * INTO #t2 FROM t3 
+
+--23\ PROCEDURE: CREATE PROC ps2 AS BEGIN SELECT... END; EXEC ps2
+--24\ PROCEDURE: CREATE PROC pr1 @year int, AS ...where c1=@year => exec pr1 2023
+--25\ PROCEDURE: CREATE PROC pr5 @a INT OUTPUT AS SELECT...; DECLARE @a INT; EXEC pr5 @a OUTPUT; PRINT ...@a
+--26\ INDEX: CREATE INDEX ind ON T1(c1)
+--27\ UDF(scalar): create function f1 (@salary) RETURNS varchar(10) AS BEGIN DECLARE @c; IF @salary<100 SET @c='Low'... RETURN @c => SELECT *, f1...
+--28\ UDF(table): ...f2 (@this) RETURNS TABLE AS RETURN (select ... where salary > @this); => select * from f2; 
+--29\ ?GROUP BY ROLLUP/GROUPPING SETS/CUBE; CROSS APPLY/ OUTER APPLY; PIVOT/UNPIVOT

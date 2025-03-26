@@ -13,7 +13,7 @@ DML (insert)
 {"name": "Alice", "age": 31, "languages": ["english", "french"]},
 {"name": "Lene", "age": 29, "languages": ["english", "spanish"]},
 {"name": "Kate", "age": 30, "languages": ["german", "russian"]}])
-Импортировать json-файл [{},{}]: Mongo Compass
+Импортировать json-файл [{},{}]: Mongo Compass => myCollection => Add data => Import json
 
 DML (update/delete)
 Полностью заменить один документ (name:Donald) другим:

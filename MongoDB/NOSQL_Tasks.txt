@@ -48,3 +48,5 @@ db.companies.insertOne(_id) => db.users.insertOne(…company) => user1=db.users.
 
 comp1=comp.insertOne => user1=(name,age,comp:{ "$ref":”comp”, "$id":comp1. insertedId}}) =>users.insertOne(user1) => comp.findOne(_id:user1.comp.$id)
 
+END
+

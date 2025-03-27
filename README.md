@@ -1,5 +1,5 @@
 # Trainers
 ## 👉 SQL Server
 ## 👉 MongoDB
-## 👉 Shell
-## 👉 Git
+## 💻  Shell
+## 📺  Git

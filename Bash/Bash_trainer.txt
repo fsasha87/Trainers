@@ -1,6 +1,21 @@
-1\ Просмотр списка файлов и папок: Ls => ls *.txt => ls 'folder 2' => ls .. => clear => ls --help => ls –a (в т.ч. скрытые) => ls --all => ls –l
+1\ Просмотр списка файлов и папок: Ls => ls 'folder 2' => ls .. => clear => ls --help => ls –a (в т.ч. скрытые) => ls --all => ls –l  => ls | sort => ls *.txt =>  find -name "*.csv" -size +100k (в текущей и подпапках)
 2\ Вывести результат в файл: ls > output.txt  => ls -l > output.txt
 3\ Pwd (путь к текущей директории) => cd d:/IT => cd 'folder 2' => cd .. => mkdir 'Folder 3' => touch temp_file.txt (создать файл) => cp temp_file.txt folder2 (скопировали файл в папку) => cp temp_file.txt temp_file2.txt => cp -r folder1 backup_folder1 (скопировать папку с содержимым) => rm temp_file.txt (удалили файл) => rm -r backup_folder1 (удалили папку с содержимым)
-4\ echo "Data Engineer" > notes.txt (записали текст в созданном файле) => echo "Data Tester" >> notes.txt (дописали) => cat notes.txt (считали текст)  =>  grep "Tester" notes.txt (поиск текста в файле)
-5\ touch hello_world1.txt  => echo 'print("Hello world")'  => cat hello_world1.txt  => python hello_world1.txt (запустили скрипт с файла)
-6\ winpty python (писать скрипт в баш) =>  print(“Hello”) => 2+2 => quit()
+4\ echo "Data Engineer" > notes.txt (записали текст в созданном файле) => echo "Data Tester" >> notes.txt (дописали) => cat notes.txt (считали текст)  =>  cat notes.txt | tr a-z A-Z (в верхнем регистре)  => cat notes.txt | sort (сортировка строк)  => tac notes.txt (в обратном порядке)  => wc hello.txt (выводит количество строк, слов и символов) => head -1 notes.txt  =>  tail -2 notes.txt => less notes.txt (откроет vi, выход q) => grep "Tester" notes.txt (поиск текста в файле) => grep "T..ter" notes.txt
+5\ cut -d , -f 1-2 ds_salaries.txt (1й и 2й столбец строки с разделителем) =>  cut -d , -f 1-4 ds_salaries.txt | sort | head -n 10
+6\ touch hello_world1.txt  => echo 'print("Hello world")'  => cat hello_world1.txt  => python hello_world1.txt (запустили скрипт с файла)
+7\ winpty python (писать скрипт в баш) =>  print(“Hello”) => 2+2 => quit()
+8\ Редактирование файлов в VI: vi notes.txt => i => changes => ESC => : => wq => Enter
+9\ Редактирование файлов в Nano: nano notes.txt => changes => Ctrl X => Ctrl Y => Enter
+
+10\ awk (для фильтрации, подсчета, агрегации и т.д.)
+11\ notes2.txt: #!/bin/bash    echo hello    exit 0;   bash notes2.txt
+12\ переменные и аргументы bash-скрипта 
+13\ if then else fi exit
+14\ case in echo esac exit
+15\ while do done exit 
+16\ until do done exit
+17\ for do done exit
+18\ for in do done exit
+
+

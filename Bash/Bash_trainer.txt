@@ -1,0 +1,6 @@
+1\ Просмотр списка файлов и папок: Ls => ls *.txt => ls 'folder 2' => ls .. => clear => ls --help => ls –a (в т.ч. скрытые) => ls --all => ls –l
+2\ Вывести результат в файл: ls > output.txt  => ls -l > output.txt
+3\ Pwd (путь к текущей директории) => cd d:/IT => cd 'folder 2' => cd .. => mkdir 'Folder 3' => touch temp_file.txt (создать файл) => cp temp_file.txt folder2 (скопировали файл в папку) => cp temp_file.txt temp_file2.txt => cp -r folder1 backup_folder1 (скопировать папку с содержимым) => rm temp_file.txt (удалили файл) => rm -r backup_folder1 (удалили папку с содержимым)
+4\ echo "Data Engineer" > notes.txt (записали текст в созданном файле) => echo "Data Tester" >> notes.txt (дописали) => cat notes.txt (считали текст)  =>  grep "Tester" notes.txt (поиск текста в файле)
+5\ touch hello_world1.txt  => echo 'print("Hello world")'  => cat hello_world1.txt  => python hello_world1.txt (запустили скрипт с файла)
+6\ winpty python (писать скрипт в баш) =>  print(“Hello”) => 2+2 => quit()

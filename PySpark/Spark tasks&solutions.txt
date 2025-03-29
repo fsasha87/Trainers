@@ -1,0 +1,58 @@
+	Ingestion from DS
+1.0\ Вывести список смонтированных(подключенных) папок
+dbutils.fs.mounts()
+1.0\ Вывести список файлов выбранной папки (путь забора данных)
+%fs ls /mnt/myDL/raw
+1.1\ Импортировали с pyspark.sql.type нужные для схемы типы данных+StructType/Field 
+from pyspark.sql.types import StructType, StructField, IntegerType, StringType, DateType, DoubleType, FloatType
+1.2\ Создали схему используя StructType c названием и типом полей, null/not_null
+my_schema = StructType(fields=[StructField("myId", IntegerType(), False),                                      StructField("myRef", StringType(), True),...])
+NESTED_JSON: name_schema = StructType(fields=[StructField("forename", StringType(), True), StructField("surname", StringType(), True)])
+my_schema = StructType(fields=[StructField("myId", IntegerType(), False), …, StructField("name", name_schema, True) ])
+1.2\ Создали схему (DDL-стиль) 
+my_schema = "myId INT, myRef STRING, name STRING, …"
+
+1.3\ Создали датафрейм считав данные с файла (CSV) учитывая схему:
+my_df = spark.read.option("header", "true").schema(my_schema).csv("/mnt/myDL/raw/my.csv")
+1.3\ Создали датафрейм считав данные с файла (JSON) учитывая схему:
+my_df = spark.read.schema(my_schema).json("/mnt/mydl/raw/my.json")
+1.3\ Создали датафрейм считав данные с одного/нескольких многострокового json:
+my_df = spark.read.schema(my_schema).option("multiline", True).json("/mnt/myDL/raw/my.json")
+my_df = spark.read.schema(my_schema).option("multiLine", True).json("/mnt/myDL/raw/myFoder")
+1.3\ Создали датафрейм считав данные с нескольких файлов:
+my_df = spark.read.schema(my_schema).csv("/mnt/myDL/raw/my/my_split*.csv")
+
+1.4\ напечатали схему датафрейма
+my_df.printSchema()
+1.5\ напечатали датафрейм:
+display(my_df)
+
+	
+2.1\ Импорт functions
+from pyspark.sql.functions import col, concat, current_timestamp, to_timestamp, lit
+2.2\ Переименовать столбцы 
+changed_df = my_df.withColumnRenamed("driverId", "driver_id")
+2.3\ добавить новый столбец даты вставки
+changed_df = my_df.withColumn("ingestion_date", current_timestamp())
+2.4\ добавить новый столбец объединения ячеек.
+changed_df = my_df.withColumn("name", concat(col("name.forename"), lit(" "), col("name.surname")))
+2.5\ добавить новый столбец с фиксированным значением
+changed_df = my_df.withColumn("env", lit("Production"))
+2.6\ добавить новый столбец объединения ячеек время и даты.
+changed_df = my_df.withColumn("race_timestamp", to_timestamp(concat(col("date"), lit(" "), col("time")), "yyyy-MM-dd HH:mm:ss"))
+2.7\ Удалить столбец:
+changed_df = my_df.drop(col("url"))
+2.8\ Выбрать (и переименовать) столбцы:
+changed_df = my_df.select("myId", "myRef", "name", "country", "location", "lat", "lng", "alt")
+changed_df = my_df.select(col("raceId").alias('race_id'), col("year").alias('race_year'), col("round"), col("myId").alias('my_id'), col("name"), col("ingestion_date"), col("race_timestamp"))
+
+	LOAD TO DATA LAKE
+3.1\ Записали в паркет
+changed_df.write.mode("overwrite").parquet("/mnt/myDL/processed/drivers")
+3.2\ Записали в паркет и разбить на несколько файлов
+changed_df.write.mode("overwrite").partitionBy("race_year").parquet("/mnt/myDL/processed/races")
+3.Х\ Прочитали паркет
+display(spark.read.parquet("/mnt/myDL/processed/drivers"))
+3.ХХ\ Список новых файлов
+%fs    ls /mnt/myDL/processed/constructors
+

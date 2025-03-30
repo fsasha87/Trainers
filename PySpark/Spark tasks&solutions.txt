@@ -56,3 +56,5 @@ display(spark.read.parquet("/mnt/myDL/processed/drivers"))
 3.ХХ\ Список новых файлов
 %fs    ls /mnt/myDL/processed/constructors
 
+PARAMS & VARIABLES
+

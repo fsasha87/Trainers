@@ -57,4 +57,5 @@ display(spark.read.parquet("/mnt/myDL/processed/drivers"))
 %fs    ls /mnt/myDL/processed/constructors
 
 PARAMS & VARIABLES
+Transformation: filter, join, aggregation&groupby, windows functions
 

@@ -1,0 +1,40 @@
+НАЧАЛО РАБОТЫ (в Azure portal)
+1\ Создаем Resource group в Azure Portal.
+2\ Create Storage Acount: Blob storage/ Data Lake Storage (если Hierarchical namespace=Enabled)
+Разделы Storage account: Access Control (IAM), Storage browser, Data storage (Containers, File shares, Queues, Tables),  Security + networking (Access keys), Monitoring (Insights, Alerts, Metrics, Workbooks, Diagnostic settings, Logs).
+3\ Create DB and DB server
+Creating Azure SQL Database: Create resource => SQL Database => Create => … => Create SQL Database Server (Use SQL authentication=OK) => Workload environment=Development => Confige database (Service trier=Basic) => Networking => Connectivity method=Public endpoint => Allow access server=Yes => Add IP=Yes
+4\ Create Azure Data Factory (для ETL и оркестрации) => Launch Studio
+Разделы ADF: Author (Pipelines, Datasets, Data flows), Manage, 
+5\ Access keys – для авторизации и аутентификации. Полный прямой доступ без ролей (ключ в коде). Для каждого Storage account автоматичести генерируются два набора ключей. 
+Альтернатива: использовать Azure Key Vault, Azure AD, RBAC и SAS-токены.
+А\ Доступ к всему SA: MySA => Access Keys => Copy key, Connection string
+B\ Доступ к папке.файлу: Azure => MySA => Data Storage (Containers) => myContainer =>кнопка ... => Container properties => copy URL
+6\ Create Azure Key Vault - для безопасного хранения паролей/токенов/сертификатов...
+Create secrets: A\ Получаем сonnection string (для внешнего доступа):
+MySA => Access Keys => Copy key, Connection string 
+MySQLServer => SQL databases => Connection strings
+B\ MyKV => Secrets => Generate/Import => Secret_value=my_connection_string
+C\ Если надо добавить для доступа в ADF: Access policy => Add => (GET+List).
+7\ Access control (IAM) - управления доступом к ресурсам с помощью ролей (RBAC: Reader, Owner, Contributor (управление ресурсами без права назначения ролей)): 
+MyKV => IAM => Role assignments => Key Vault Admin (для секретов)   
+MyRG => IAM => Role assignments => Contributor 
+8\ Опционно: Install desktop Azure Storage Explorer. Install desktop Azure Data Studio
+
+НАЧАЛО РАБОТЫ ETL (в ADF)
+1\ Создать контейнеры raw/processed/lookup/configs в Blob/ADLS2-хранилище.
+mySA => Storage browser => Blob containers => Add container => Зайти в него => Upload
+2\ Создать LinkedService для Azure Blob Storage, Azure Data Lake Storage Gen2, HTTP, Azure SQL Database, Azure Databricks.
+3\ Создать наборы данных для исходных и целевых файлов, url, таблиц.
+4\ Создать pipeline (перетянуть и соеденить Activities)
+5\ Создать data flow (где необходимо обработать данные)
+Data flow debug – запустит кластер. Чтобы выполнить поток данных нужно в пайплайне создать Data Flow Activity и добавить к нему ранее созданный Data Flow.
+6\ Data Orchestration: Разнесли пайплайні по папкам: ingest, process, sqlize. Разнесли датасеты по папкам: raw, processed, lookup, sql. Создали родительский пайплайн. Создали тригеры и привязали их к пайплайнам.
+7\ Debug (запускает пайплайн) или создать тригер.
+В ADF есть три вида тригеров : Schedule Trigger (точное время), Tumbling Window Trigger (периодически, один на пайплайн), Storage Event Trigger (при создании или удалении Data Blob).
+Manage => Triggers => New => Type=Storage_Events, substriction, storage_account, container, blob_path_begins_with, Event=Blob_created => Continue => OK => Publish
+Mysubscription => Resource providers => MS.EventGrid => Register
+Manage => Mypipeline => Add trigger =>…=>Publish all
+8\ Что мониторить: рессурсы ADF, Integration runtime, Trigger runs, Pipeline runs, Activity runs.
+А\ Data Factory Monitor: Возможность отслеживать состояние конвейера/триггеров; Можно использовать для повторного запуска неисправных конвейеров/триггеров; Возможность отправлять оповещения из базовых показателей уровня; Предоставляет базовые показатели и журналы; Запуски конвейера хранятся только в течение 45 дней
+В\ Azure Monitor: Возможность направлять диагностические данные в другие решения для хранения данных; Предоставляет более полные диагностические данные; Возможность писать сложные запросы и настраиваемые отчеты (пр: Power BI); Возможность создавать отчеты по нескольким фабрикам данных.

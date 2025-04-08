@@ -11,7 +11,7 @@
 
 
 --9\ SELECT(Salaries_table): SELECT TOP 5 * {PL:LIMIT 5} => DISTINCT => ORDER BY => WHERE (=,<>, [NOT] LIKE('x',_,%), [NOT] IN, BETWEEN, IS [NOT] NULL)
---10\ STRING: title+CAST(year) => select LEN(x)/upper()/reverse/concat/substring/replace
+--10\ STRING: title+CAST(year)/concat => select LEN(x)/upper/reverse/substring/replace
 --11\ DATE: select GETDATE()/GETUTCDATE()/MONTH(GETDATE())/isdate/dateadd/datediff
 --12\ CASE/IFF: CASE WHEN c1 < 100 THEN 'A' ELSE 'B' END => --SELECT*,IIF(c1<100,'A','B')...
 --13\ AGGREGATE: MIN, SUM, Count(*), ROUND(AVG(),1), x*40 as UAH => WHERE/ Group by c1,c2 /Having /Order By

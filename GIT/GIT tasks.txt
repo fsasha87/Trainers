@@ -1,0 +1,10 @@
+Сценарии:
+1.Заливаем свой проект в облако:
+Github account (Repositories => New => Name, Add .gitignore =>CreateRepository);
+GitBash => git init (в папке проекта) => git status => git add . => git commit -m "first commit" => git remote add origin https://github.com/fsasha87/test2.git => git push -u origin master
+В гитигноре (.gitignor) перечисляем список папок (/.idea) и файлов (errors.txt), которые мы не хотим, чтоб попали в гит (репозиторий).
+2.Клонируем чужой код:
+Зайти в папку => git clone https://github.com/fsasha87/test2.git => IdeaProject (File=>Open);
+Партнер должен импортировать ваши изменения (git pull)
+3.Работаем(скачиваем изменения в локал->дорабатываем код->добавили в промеж.файл индекс ->комитим изменения->заливаем в облако):
+git pull (импортируем последние изменения с remote сервера)=> пишем код => git status => git add . => git commit -m "commitMessage" => git push 

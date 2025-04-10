@@ -1,39 +1,74 @@
+	Configure:
+НАСТРОИТЬ SSH-ключ
+1\ Генерация SSH-ключа локально: $ ssh-keygen -t ed25519 -C “my@mail” => Enter => Enter
+2\ Проверить, что агент SSH запущеный: eval "$(ssh-agent -s)"
+3\ Добавить SSH-ключ к агенту SSH: ssh-add ~/.ssh/id_ed25519
+4\ Скопировать SSH-ключ: cat ~/.ssh/id_ed25519.pub
+5\ Добавить SSH-ключ к GitHub: GitHub => Settings => New SSH key => Add
+2сп\ Генерация токена:
+Идея: settings => github => new token => generate token => GitHub: No expiration => все галочки => Generate
+3\ Подписать автора коммита:
+git config –list         git config --global user.name "Name"     git config --global user.email mail@gmail.com
+git config --global core.editor "notepad"  - редактор по умолчанию
+	
+
 	Сценарии:
 1.Заливаем свой проект в облако:
 Github account (Repositories => New => Name, Add .gitignore =>CreateRepository);
-GitBash => git init (в папке проекта) => git status => git add . => git commit -m "initial commit" => git remote add origin https://github.com/user/test2.git => git push -u origin master
+GitBash => git init (git init --initial-branch=main) => git status => git add . => git commit -m "Initial" => git remote add origin https://github.com/user/test2.git => (Если есть изменения на GitHub пр. readme.md): git pull --rebase origin main=>git push origin main)  git push -u origin main
 В гитигноре (.gitignor) перечисляем список папок (/.idea) и файлов (errors.txt), которые мы не хотим, чтоб попали в гит (репозиторий).
+
 2.Клонируем чужой код:
-Зайти в папку => git clone https://github.com/fsasha87/test2.git => IdeaProject (File=>Open);
-Партнер должен импортировать ваши изменения (git pull)
+Зайти в папку => git clone https://github.com/user/test2.git => IdeaProject (File=>Open);
+
 3.Работаем(скачиваем изменения в локал->дорабатываем код->добавили в промеж.файл индекс ->комитим изменения->заливаем в облако):
-git pull (импортируем последние изменения с remote сервера)=> пишем код => git status => git add . => git commit -m "commitMessage" => git push 
+git pull (импортируем последние изменения с remote сервера на мейн) => пишем код на другой ветке => git status => git add . => git commit -m "commitMessage" => git push 
+
+4.Работа с ветками (смотрим ветки-создаем-переключаемся на новую-сливаем-удаляем новую):
+Git branch => git checkout –b branch1 (или git branch branch1=>git checkout branch1) => git merge main => git branch -D branch1
+
+5.Разрешение конфликтов:	
+git checkout master =>  git merge feature1 => ошибка master | MERGING merge conflict
+1\ git merge --abort – прервать слияние.
+2\ исправить файлы => git add . => git commit –m”fixed merge conflict”
+3\ Выбрать версию: git checkout --Xours --Xtheirs  4\ Вручную: git diff  5\ Откатить мерж: git revert 09а47
+6\ User merge tool
+Как избегать конфликтов: короткие коммиты, не править пустые строки, часто мержить.
+
+6.PR:
+git checkout -b feature => меняем файл  =>  git add . => git commit –m”1st” => git push (push –set-upstream origin feature)  => GitHub: compare&PR => Create PR => Merge PR => Delete branch => git branch –a (в т.ч. remote repo) => git branch –vv (связи локальных с удаленными)  =>  git checkout main => git pull => git branch -D feature => git branch 
+Add rewiever: GitHub: myProject => Settings => Collaborations => Invite people
+Submit review: Add review => Review changes => Approve => Submit review
 
 
-	TASKS:
-	Areas, diff, log, amend
+	Tasks:
+Areas, diff, log, amend
 1\ git init =>  touch file1.txt  =>  ls –a   =>  echo "String_1" >> file1.txt  => cat file1.txt =>  git add file1.txt  =>  git commit -m "Add file1.txt" 
 2\ =>  notepad file1.txt (some changes) =>  git status  =>  git diff  =>  git add .  => git diff --cached  => git commit –m’2nd’ =>  git log  =>  git log --oneline  =>  git log -p  =>  git show 68cf992
 3\ => echo "String_3" >> file1.txt  => git add . => git commit --amend --no-edit
 
-	Востановить файл:
+Востановить файл:
 Восстановить модифиц.файл: меняем файл => git status =>  git restore file1.txt  => git status
 Восстановить модифиц.файл (2сп): меняем файл => git status  =>  git checkout -- file1.txt  => git status
 Восстановить индексир.файл: меняем файл => git add .  =>  git status =>  git restore --staged file1.txt  =>  git status =>  git restore file1.txt  => git status
 Откатить закомиченный файл до последнего коммита:  git restore file1.txt 
 Откатить закомиченный файл до указанного коммита:  git log --oneline  =>  git show 74c481  => git restore --source=74c481 file1.txt  =>  git add .  =>  git commit –m”restore file from”
 
-	Удалить и восстановить файл:
+Удалить и восстановить файл:
 Удалить новый файл: создать файл =>  ls  =>  git clean –n  =>  ls  => git clean –f  =>  ls
 Удалить файл из working и восстановить: rm file1.txt  =>  git status  =>  ls  =>  git restore file1.txt  =>  ls
 Удалить файл из staging и восстановить:  git rm test.txt  =>  git restore --staged test.txt  =>  git restore test.txt
 
-	Восстановить весь репозирорий:
+Восстановить весь репозирорий:
 Откат с удалением всех закомиченных изменений: git log --oneline  =>  git reset --hard 388c76f  =>  git log –oneline
-Откат с переносом закомиченных изменений в stage: git log --oneline  =>  git reset --hard 388c76f  =>  git log –oneline
+Откат с переносом закомиченных изменений в stage: git log --oneline  =>  git reset --soft 388c76f  =>  git log –oneline
 Удалить проиндексированный файлы:  создать файл =>  git add . =>  git reset --hard HEAD
+git reset --hard HEAD^  - отменяет последний коммит и удаляет его иземнения. 
+git reset --soft HEAD^^^ (или HEAD~3) – на три комита назад, но изменения остаются в индексе.
+git reset --mixed HEAD^ (по умолч.) - отменяет последний коммит, но изменения остаются (до add .).  
+Remote repository (после git push): git revert <commit_sha1>
 
-	Branch:
-1\ Git branch  =>  git checkout –b feature (или git branch feature  =>  git checkout feature)  =>  создать файл и закомитить  =>  ls  =>  git log  =>  git checkout main  =>  ls  =>  git log  =>  git diff feature  => git merge feature  =>  git branch
+Branch:
+1\ Git branch  =>  git checkout –b feature (или git branch feature  =>  git checkout feature)  =>  изменить файл и закомитить  =>  ls  =>  git log  =>  git checkout main  =>  ls  =>  git log  =>  git diff feature  => git merge feature  =>  git branch
 2\ CONFLICT: git checkout -b feature3  =>  git rm test.txt  => git add .  =>  git commit –m “delete test.txt”  => git checkout main  => echo "String_2" >> test.txt  =>  git add .  =>  git commit –m ’update test.txt’  =>  git diff feature3  =>  git merge feature3  =>  CONFLICT (main|MERGING) =>  git rm test4.txt  => git commit -m "delete from main"  =>  git merge feature3  =>  git log –oneline  =>  git branch –d feature3
 3\ CONFLICT in IDEA: создать проект+.gitignore+test.py(print(“Hello”)) => закомитить => New branch  =>  добавить 2ю строку в test.py  => переключится в main => добавить 2ю строку в test.py == merge new_branch into main => CONFLICT => решить конфликт => apply => удалить new_branch

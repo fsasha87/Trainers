@@ -11,29 +11,29 @@ git pull (импортируем последние изменения с remote
 
 
 	TASKS:
-Areas, diff, log, amend
+	Areas, diff, log, amend
 1\ git init =>  touch file1.txt  =>  ls –a   =>  echo "String_1" >> file1.txt  => cat file1.txt =>  git add file1.txt  =>  git commit -m "Add file1.txt" 
 2\ =>  notepad file1.txt (some changes) =>  git status  =>  git diff  =>  git add .  => git diff --cached  => git commit –m’2nd’ =>  git log  =>  git log --oneline  =>  git log -p  =>  git show 68cf992
 3\ => echo "String_3" >> file1.txt  => git add . => git commit --amend --no-edit
 
-Востановить файл:
+	Востановить файл:
 Восстановить модифиц.файл: меняем файл => git status =>  git restore file1.txt  => git status
 Восстановить модифиц.файл (2сп): меняем файл => git status  =>  git checkout -- file1.txt  => git status
 Восстановить индексир.файл: меняем файл => git add .  =>  git status =>  git restore --staged file1.txt  =>  git status =>  git restore file1.txt  => git status
 Откатить закомиченный файл до последнего коммита:  git restore file1.txt 
 Откатить закомиченный файл до указанного коммита:  git log --oneline  =>  git show 74c481  => git restore --source=74c481 file1.txt  =>  git add .  =>  git commit –m”restore file from”
 
-Удалить и восстановить файл:
+	Удалить и восстановить файл:
 Удалить новый файл: создать файл =>  ls  =>  git clean –n  =>  ls  => git clean –f  =>  ls
 Удалить файл из working и восстановить: rm file1.txt  =>  git status  =>  ls  =>  git restore file1.txt  =>  ls
 Удалить файл из staging и восстановить:  git rm test.txt  =>  git restore --staged test.txt  =>  git restore test.txt
 
-Восстановить весь репозирорий:
+	Восстановить весь репозирорий:
 Откат с удалением всех закомиченных изменений: git log --oneline  =>  git reset --hard 388c76f  =>  git log –oneline
 Откат с переносом закомиченных изменений в stage: git log --oneline  =>  git reset --hard 388c76f  =>  git log –oneline
 Удалить проиндексированный файлы:  создать файл =>  git add . =>  git reset --hard HEAD
 
-Branch:
+	Branch:
 1\ Git branch  =>  git checkout –b feature (или git branch feature  =>  git checkout feature)  =>  создать файл и закомитить  =>  ls  =>  git log  =>  git checkout main  =>  ls  =>  git log  =>  git diff feature  => git merge feature  =>  git branch
 2\ CONFLICT: git checkout -b feature3  =>  git rm test.txt  => git add .  =>  git commit –m “delete test.txt”  => git checkout main  => echo "String_2" >> test.txt  =>  git add .  =>  git commit –m ’update test.txt’  =>  git diff feature3  =>  git merge feature3  =>  CONFLICT (main|MERGING) =>  git rm test4.txt  => git commit -m "delete from main"  =>  git merge feature3  =>  git log –oneline  =>  git branch –d feature3
 3\ CONFLICT in IDEA: создать проект+.gitignore+test.py(print(“Hello”)) => закомитить => New branch  =>  добавить 2ю строку в test.py  => переключится в main => добавить 2ю строку в test.py == merge new_branch into main => CONFLICT => решить конфликт => apply => удалить new_branch

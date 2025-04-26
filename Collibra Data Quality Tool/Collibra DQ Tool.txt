@@ -1,0 +1,7 @@
+Collibra Data Quality Tool
+1\ Создаем и раним джобу:
+Menu => Explorer => myDB/schema/table => (View Dat (schema&result(25 rows))) Create DQ Job => Profile (установить Scope, Range -> Build Model -> Transform tab: Null/Empty/Uniques/Max/Min/Mean/Row_count/Load_time-> Run->Local_agent->Run->Refresh), опционно установить Pattern/Outlier/Dupe/Source
+2\ Анализируем результат (датасет):
+Menu => Jobs => Click myJob => View results page: Dimensions: Shapes (несоответствие форматов, пр: другой формат телефона), Dupes (дубликаты), Schema, Record, Source, Pattern (шаблон на несколько колонок), Outliers (резко выделяющиеся значения), Rules, Behavior (сравнение с историей) => myJob (Profile, Rules, Schedule, Alerts) => Profile (Column-> Automatic checks: Min/ Max/ Unique/ Median/ Null/ Empty/ TopValues)
+3\ Установить правила проверки:
+Menu => Rules => Rule builder => Select dataset => Select type (SQL(Simple rule (пр: select … where =100), Freeform rule, Native SQL), Data_type (Null_check, Date_check, Int_check…)) => Select column
